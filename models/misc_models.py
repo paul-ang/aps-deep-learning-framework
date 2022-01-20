@@ -6,10 +6,6 @@ import functools
 from torch.optim import lr_scheduler
 import numpy as np
 
-###############################################################################
-# Helper Functions
-###############################################################################
-
 
 def get_filter(filt_size=3):
     if(filt_size == 1):

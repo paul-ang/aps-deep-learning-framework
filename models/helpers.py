@@ -9,13 +9,17 @@ def compute_mae(fake_ct, real_ct):
 
     return mae
 
+
 def unscale_image(scaled_image: np.array, original_range: list, scaled_range:list =[0, 1]):
     minmax_form = (scaled_image - scaled_range[0]) / (scaled_range[1] - scaled_range[0])
     original_image = minmax_form * (original_range[1] - original_range[0]) + original_range[0]
 
     return original_image
 
-def compute_metrics(fake_ct, ori_ct_min, ori_ct_max, real_ct, real_mri=None, create_figure=False, save_figurename:str =None, scale_data=[0, 1]):
+
+def compute_metrics(fake_ct, ori_ct_min, ori_ct_max, real_ct, real_mri=None,
+                    create_figure=False, save_figurename: str = None,
+                    scale_data=[0, 1]):
     '''
     :param fake_ct: numpy array of fake ct with shape [batch, H, W]
     :param ori_ct_min: original max ct HU value with shape [batch, 1, 1]
