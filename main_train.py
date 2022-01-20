@@ -25,9 +25,9 @@ def main():
                         help="Name of the experiment folder.")
     parser.add_argument('--monitor_loss', default='val_mae', type=str,
                         help="For early stopping and save best model.")
-    parser.add_argument('--image_size', default=(288, 288), type=int,
+    parser.add_argument('--image_size', default=[288, 288], type=int,
                         help="image size. (Default = 288x288). ", nargs="+")
-    parser.add_argument('--batch_size', default=16, type=int,
+    parser.add_argument('--batch_size', default=2, type=int,
                         help='batch size for the train and val dataloaders. '
                              'Test dataloader always use batch size of 1 for '
                              'visualization compatibility.')

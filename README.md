@@ -17,7 +17,7 @@ Framework for MR-to-CT Image Synthesis with a New Hybrid Objective Function_.
    PyTorch [tutorial](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html#creating-a-custom-dataset-for-your-files)
    if you are unfamiliar with this step. Ensure that the data are normalized using min-max formula and resized to the expected image size (default is 288x288).
 2. Integrate your custom Dataset class into `main_train.get_training_dataloaders()`.
-3. Run `python main_train.py` to start training and testing the APS model. Run `python main_train.py -h` for the available hyperparameters.
+3. Run `python main_train.py --gpus 1` to start training and testing the APS model on 1 GPU. Execute `python main_train.py --help` for the available input arguments.
 
 ## Visual results
 

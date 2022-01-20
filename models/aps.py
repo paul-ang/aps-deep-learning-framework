@@ -153,8 +153,6 @@ class APS(pl.LightningModule):
                                    save_figurename=save_figurename)
             ssim, mae, psnr, fig = mets['ssim'], mets['mae'], mets['psnr'], \
                                    mets['fig']
-            self.logger.experiment.log_figure(figure_name=f"Result {batch_idx}",
-                                              figure=fig)
             self.log('test_ssim', ssim, on_epoch=True)
             self.log('test_mae', mae, on_epoch=True)
             self.log('test_psnr', psnr, on_epoch=True)
