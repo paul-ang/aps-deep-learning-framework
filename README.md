@@ -8,8 +8,7 @@ Framework for MR-to-CT Image Synthesis with a New Hybrid Objective Function_.
 - Download or clone this repo to your computer.
 - Run `pip install -r requirements.txt` to install the required Python packages.
 - The code was developed and tested on Python 3.6.13 and Ubuntu 16.04.
-
-[//]: # (- Note that this codebase uses the [PyTorch Lightning framework]&#40;https://www.pytorchlightning.ai&#41;.)
+- Note that this codebase runs on [PyTorch Lightning library](https://www.pytorchlightning.ai).
 
 ## Training and testing the APS framework on your own  dataset
 
