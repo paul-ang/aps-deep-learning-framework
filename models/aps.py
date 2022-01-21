@@ -13,7 +13,6 @@ class APS(pl.LightningModule):
                  lambda_str=10.0, lambda_pix=100.0, num_patches=256, layers=[4, 7, 9]):
         super().__init__()
         self.save_hyperparameters()
-        self.display_epoch=5
 
         # Define generator (ResNet-based)
         self.net_G = define_G(input_nc=1, output_nc=1, ngf=64,
@@ -63,9 +62,9 @@ class APS(pl.LightningModule):
         y_hat = torch.cat([fake_ct, real_ct], dim=0)
         y_tilda = torch.cat([real_ct_reversed, real_ct_reversed], dim=0)
 
-        loss = self.l_str_fn(x, y_hat, y_tilda)  # this func also acts as l_c
+        l_c = self.l_str_fn(x, y_hat, y_tilda)  # this func also computes l_c
 
-        return loss
+        return l_c
 
     def _gen_step(self, real_ct, real_mri):
         fake_ct = self(real_mri)
@@ -124,13 +123,10 @@ class APS(pl.LightningModule):
                                    ct_min.cpu().numpy(),
                                    ct_max.cpu().numpy(),
                                    ct.squeeze(1).cpu().numpy())
-            ssim, mae, psnr = mets['ssim'], mets['mae'], mets['psnr']
+        self.log('val_mae', mets['mae'], on_epoch=True)
+        self.log('val_psnr', mets['psnr'], on_epoch=True)
 
-        self.log('val_ssim', ssim, on_epoch=True)
-        self.log('val_mae', mae, on_epoch=True)
-        self.log('val_psnr', psnr, on_epoch=True)
-
-        return {'mae': mae}
+        return {'mae': mets['mae']}
 
     def test_step(self, batch, batch_idx):
         ct, mri = batch['ct'], batch['in_phase']
@@ -142,7 +138,7 @@ class APS(pl.LightningModule):
             ct_min = ct_min.view(-1, 1, 1)
             ct_max = ct_max.view(-1, 1, 1)
 
-            # Compute ssim, mae, and visualize a figure
+            # Compute MAE, PSNR, and save visual results
             save_figurename = f"{self.trainer.default_root_dir}/visual/Result {batch_idx}.png"
             mets = compute_metrics(pred.squeeze(1).cpu().numpy(),
                                    ct_min.cpu().numpy(),
@@ -151,20 +147,10 @@ class APS(pl.LightningModule):
                                    mri.squeeze(1).cpu().numpy(),
                                    create_figure=True,
                                    save_figurename=save_figurename)
-            ssim, mae, psnr, fig = mets['ssim'], mets['mae'], mets['psnr'], \
-                                   mets['fig']
-            self.log('test_ssim', ssim, on_epoch=True)
-            self.log('test_mae', mae, on_epoch=True)
-            self.log('test_psnr', psnr, on_epoch=True)
-            self.log('test_bone_mae', mets['bone_mae'], on_epoch=True)
-            self.log('test_air_mae', mets['air_mae'], on_epoch=True)
-            self.log('test_tissue_mae', mets['tissue_mae'], on_epoch=True)
-            self.log('test_iou', mets['iou'], on_epoch=True)
-            self.log('test_air_iou', mets['air_iou'], on_epoch=True)
-            self.log('test_tissue_iou', mets['tissue_iou'], on_epoch=True)
-            self.log('test_bone_iou', mets['bone_iou'], on_epoch=True)
+        self.log('test_mae', mets['mae'], on_epoch=True)
+        self.log('test_psnr', mets['psnr'], on_epoch=True)
 
-        return {'mae': mae}
+        return {'mae': mets['mae']}
 
     def configure_optimizers(self):
         assert self.l_str_fn.LSeSim.conv_init
