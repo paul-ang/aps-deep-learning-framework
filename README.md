@@ -43,7 +43,7 @@ If you use this code for your research, please cite our paper.
 
 ```
 @inproceedings{ang2022,
-  title={An Improved Deep Learning Framework for MR-to-CT Image Synthesis with a New Hybrid Objective Function},
+  title={An improved deep learning framework for MR-to-CT image synthesis with a new hybrid objective function},
   author={Ang, Sui Paul and Phung, Son Lam and Field, Matthew and Schira, Mark Matthias},
   booktitle={Proceedings of the IEEE International Symposium on Biomedical Imaging},
   year={2022}
